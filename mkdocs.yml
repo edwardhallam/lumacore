@@ -1,0 +1,21 @@
+site_name: LumaCore
+site_description: Infrastructure-as-Code blueprint — GitOps/TDD/security-first homelab
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+markdown_extensions:
+  - toc:
+      permalink: true
+  - admonition
+  - codehilite
+  - footnotes
+  - tables
+nav:
+  - Home: index.md
+  - Overview: overview.md
+  - Architecture (draft): architecture.md
+  - PRD: PRD-LumaCore.md
+  - Reproducibility (stub): reproducibility.md
