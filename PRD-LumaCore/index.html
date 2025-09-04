@@ -1,0 +1,1396 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Infrastructure-as-Code blueprint — GitOps/TDD/security-first homelab">
+      
+      
+      
+      
+        <link rel="prev" href="../architecture/">
+      
+      
+        <link rel="next" href="../reproducibility/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>PRD - LumaCore</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lumacore-product-requirements-document-prd" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="LumaCore" class="md-header__button md-logo" aria-label="LumaCore" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LumaCore
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              PRD
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="LumaCore" class="md-nav__button md-logo" aria-label="LumaCore" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    LumaCore
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture (draft)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    PRD
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    PRD
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-project-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1) Project Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-decisions-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Decisions (Summary)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-core-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      2) Core Requirements
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#non-goals-out-of-scope-for-mvp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non-Goals (Out of Scope for MVP)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-core-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      3) Core Features
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-core-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      4) Core Components
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-appuser-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      5) App/User Flow
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-tech-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      6) Tech Stack
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-final-architectural-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      7) Final Architectural Workflow
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-automated-testing-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      8) Automated Testing Plan
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-cicd-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      9) CI/CD Workflow
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-implementation-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      10) Implementation Plan
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-governance-change-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      11) Governance &amp; Change Control
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-a-namespace-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix A — Namespace Conventions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-b-networkpolicy-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix B — NetworkPolicy Baseline
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-c-audit-logging-recommended-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix C — Audit Logging (Recommended Baseline)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-d-risks-assumptions-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix D — Risks, Assumptions, Constraints
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-e-dataloggingtelemetry-schema-high-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix E — Data/Logging/Telemetry Schema (High-Level)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-f-mirror-guardrails" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix F — Mirror Guardrails
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-g-security-controls-matrix-owasp-top-10-cwe-top-25" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix G — Security Controls Matrix (OWASP Top 10 / CWE Top 25)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-h-hardening-recommendations-security-code-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix H — Hardening Recommendations (Security + Code Quality)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-i-owneroperator-maintenance-handbook-cadence-runbooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix I — Owner/Operator Maintenance Handbook (Cadence &amp; Runbooks)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-j-offsite-backups-dr-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix J — Offsite Backups &amp; DR Matrix
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reproducibility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reproducibility (stub)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-project-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1) Project Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-decisions-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Decisions (Summary)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-core-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      2) Core Requirements
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#non-goals-out-of-scope-for-mvp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non-Goals (Out of Scope for MVP)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-core-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      3) Core Features
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-core-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      4) Core Components
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-appuser-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      5) App/User Flow
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-tech-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      6) Tech Stack
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-final-architectural-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      7) Final Architectural Workflow
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-automated-testing-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      8) Automated Testing Plan
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-cicd-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      9) CI/CD Workflow
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-implementation-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      10) Implementation Plan
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-governance-change-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      11) Governance &amp; Change Control
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-a-namespace-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix A — Namespace Conventions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-b-networkpolicy-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix B — NetworkPolicy Baseline
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-c-audit-logging-recommended-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix C — Audit Logging (Recommended Baseline)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-d-risks-assumptions-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix D — Risks, Assumptions, Constraints
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-e-dataloggingtelemetry-schema-high-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix E — Data/Logging/Telemetry Schema (High-Level)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-f-mirror-guardrails" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix F — Mirror Guardrails
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-g-security-controls-matrix-owasp-top-10-cwe-top-25" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix G — Security Controls Matrix (OWASP Top 10 / CWE Top 25)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-h-hardening-recommendations-security-code-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix H — Hardening Recommendations (Security + Code Quality)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-i-owneroperator-maintenance-handbook-cadence-runbooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix I — Owner/Operator Maintenance Handbook (Cadence &amp; Runbooks)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-j-offsite-backups-dr-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix J — Offsite Backups &amp; DR Matrix
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lumacore-product-requirements-document-prd">LumaCore — Product Requirements Document (PRD)<a class="headerlink" href="#lumacore-product-requirements-document-prd" title="Permanent link">&para;</a></h1>
+<p>Last updated: 2025-09-03</p>
+<h2 id="1-project-overview">1) Project Overview<a class="headerlink" href="#1-project-overview" title="Permanent link">&para;</a></h2>
+<p>LumaCore is an Infrastructure-as-Code blueprint for building a sophisticated personal homelab that applies modern GitOps CI/CD, security-first development, and observability best practices. Although designed for a solo Owner/Operator, LumaCore is publicly documented to demonstrate technical capability and reproducibility for portfolio reviewers.</p>
+<p>Primary personas:
+- Owner/Operator: full admin, IaC author, SRE for the homelab
+- Portfolio Reviewer: reads public docs; may receive temporary access links for time-bound demos (no standing public endpoints)</p>
+<p>Vision statement:
+- LumaCore is an Infrastructure as Code blueprint for building a sophisticated homelab ecosystem that applies CI/CD pipelines and modern development best practices to personal infrastructure.</p>
+<p>Success criteria (first 90 days, Owner/Operator):
+- Deployment success rate: ≥95% first-run within 30 days; ≥99% by day 90
+- Median deploy time: &lt;15 minutes end-to-end by day 90 (baseline &lt;30 minutes at launch)
+- Post-deploy health checks pass rate: ≥95% without manual intervention within 90 days
+- MTTR (node/service): &lt;10 minutes via automated playbooks by day 90</p>
+<p>Exposure model:
+- Hybrid: public docs (MkDocs) are always available; all live dashboards/apps private by default
+- Temporary, Access-protected links can be spun up for specific reviews via Cloudflare Access (expire automatically)
+- Public GitHub repo: read-only mirror of infra code and docs for reviewers; canonical write path remains private GitLab; mirror happens post-merge with secret-scanning and path-filter guards.</p>
+<h2 id="key-decisions-summary">Key Decisions (Summary)<a class="headerlink" href="#key-decisions-summary" title="Permanent link">&para;</a></h2>
+<ul>
+<li>SCM and CI:</li>
+<li>Canonical code host: GitLab self-hosted (Mac Studio, Docker)</li>
+<li>Read-only mirrors: Private GitHub (full code), Public GitHub (sanitized infra + docs)</li>
+<li>GitOps engine and repo layout:</li>
+<li>Flux CD + Weave GitOps UI</li>
+<li>Single main branch; Pattern C (<code>apps/&lt;app&gt;/base</code>, <code>overlays/staging</code>, <code>overlays/prod</code>; <code>clusters/lumacore/</code>)</li>
+<li>Staging auto-sync; Prod manual reconcile via Weave UI after PR</li>
+<li>Security and secrets:</li>
+<li>1Password Secrets Operator + Connect (no secrets in Git)</li>
+<li>OPA Gatekeeper (enforce in prod, audit in staging)</li>
+<li>Pod Security Admission (Restricted) everywhere (document exceptions)</li>
+<li>NetworkPolicies default-deny with explicit allows; hardened RBAC</li>
+<li>Commit and tag signing on protected branches</li>
+<li>Supply chain and quality:</li>
+<li>Gitleaks (pre-commit + CI), SAST (Semgrep/CodeQL), SCA (OSV/Trivy), IaC (Checkov/tfsec/KICS), Trivy image scan</li>
+<li>SBOM (Syft) + image/provenance signing (Cosign), verify at admission</li>
+<li>Observability:</li>
+<li>kube-prometheus-stack (Prometheus Operator, Alertmanager, Grafana)</li>
+<li>Loki + Promtail; alerts to Discord</li>
+<li>Ingress/exposure:</li>
+<li>Traefik in-cluster behind Cloudflare Tunnel + Access (SSO/MFA); no inbound ports</li>
+<li>Lifecycle and backups:</li>
+<li>Renovate for helm/docker/deps; Flux Image Automation (staging patch auto-bump; prod PR; digest pinning)</li>
+<li>Version drift exporter + update latency SLOs</li>
+<li>Offsite backups (R2/B2/S3): GitLab data (restic or built-in), Longhorn PV recurring backups, k3s etcd snapshots; quarterly restore drills</li>
+</ul>
+<h2 id="2-core-requirements">2) Core Requirements<a class="headerlink" href="#2-core-requirements" title="Permanent link">&para;</a></h2>
+<ul>
+<li>GitOps with single main branch; Kustomize overlays for staging (auto-sync) and prod (manual sync)</li>
+<li>CI/CD using GitLab (self-hosted on Mac Studio via Docker) driving checks and promotions</li>
+<li>Flux source of truth: private GitLab (Option A approved); public GitHub mirror is reviewer-only and not used by Flux</li>
+<li>Flux CD + Weave GitOps UI for reconciliation and manual prod releases</li>
+<li>Multi-stage secret scanning using Gitleaks (pre-commit + CI) and admission policies for secret-safety</li>
+<li>Credential management with 1Password Secrets Operator + Connect (no secrets in Git)</li>
+<li>Monitoring and alerting with kube-prometheus-stack; logs with Loki + Promtail; Alertmanager to Discord</li>
+<li>Security hardening with:</li>
+<li>Default-deny NetworkPolicies in app namespaces with curated egress/ingress allows</li>
+<li>RBAC least-privilege for Flux, CI runners, and operators</li>
+<li>Admission policies (OPA Gatekeeper) enforcing in prod, auditing in staging</li>
+<li>Pod Security Admission: Restricted baseline across app namespaces (documented exemptions only)</li>
+<li>Commit and tag signing enforcement: require signed commits/tags for protected branches</li>
+<li>Kubernetes audit logging (recommended baseline below)</li>
+<li>Ingress and remote access with Traefik in-cluster behind Cloudflare Tunnel + Access (SSO, MFA)</li>
+<li>Public documentation with MkDocs Material; reproducibility guide for the Proxmox+Ubuntu+k3s reference environment</li>
+<li>Reproducible reference architecture: Proxmox, 1x k3s server + 2x agents; Longhorn default StorageClass (replica 2)</li>
+<li>Public, sanitized GitHub mirror of infra code and documentation (MkDocs via GitHub Pages) with enforced secret scanning and path filtering before mirroring</li>
+<li>Security/code-quality assurance: SAST (Semgrep/CodeQL), SCA (OSV-Scanner/Trivy), SBOM + image signing (Syft/Cosign), IaC scanning (Checkov/tfsec/KICS), linting (yamllint, kube-linter, shellcheck, markdownlint), license scanning; enforce as CI gates</li>
+</ul>
+<h2 id="non-goals-out-of-scope-for-mvp">Non-Goals (Out of Scope for MVP)<a class="headerlink" href="#non-goals-out-of-scope-for-mvp" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Multi-tenant user management and RBAC beyond Owner/Operator needs</li>
+<li>Public, persistent live access to dashboards or internal apps (only time-limited Access links for demos)</li>
+<li>Multi-cluster or geo-distributed deployment (single k3s cluster reference)</li>
+<li>Full-service mesh deployment (Istio/Linkerd); Traefik ingress is sufficient for MVP</li>
+<li>Complex progressive delivery (Flagger/Argo Rollouts); optional later for high-risk apps</li>
+<li>Centralized SIEM platform; Loki + alerts suffice for MVP</li>
+<li>Full disaster recovery automation; quarterly restore drills and documented runbooks cover MVP</li>
+</ul>
+<h2 id="3-core-features">3) Core Features<a class="headerlink" href="#3-core-features" title="Permanent link">&para;</a></h2>
+<ul>
+<li>GitOps workflow:</li>
+<li>Single repo main branch for infra; overlays/staging auto-sync; overlays/prod manual reconcile</li>
+<li>Image automation: staging auto-bumps semver patch lines; prod promoted via PR; pin by digest; no :latest</li>
+<li>Promotion by PR bump in overlays/prod; prod is reconciled manually via Weave UI</li>
+<li>CI enforcement gates:</li>
+<li>Required checks for overlays/staging and overlays/prod: secret-scan (Gitleaks), kustomize build + kubeconform, OPA policy checks (conftest or policy test step), kubectl --server-dry-run</li>
+<li>Optional checks: kube-linter, helm lint</li>
+<li>Additional security quality gates:<ul>
+<li>SAST (Semgrep/CodeQL) for app repos (language-dependent)</li>
+<li>SCA/dependency vulnerability scan (OSV-Scanner/Trivy) across app and infra deps</li>
+<li>IaC scanning (Checkov/tfsec/KICS) for Terraform and Kubernetes manifests</li>
+<li>Container image scan (Trivy) and license scan</li>
+<li>SBOM generation (Syft) and image signing (Cosign), with verification policy at admission</li>
+</ul>
+</li>
+<li>Staging: required checks, allow auto-merge on green; no required review (velocity)</li>
+<li>Prod: same required checks + manual review (CODEOWNERS) and all conversations resolved; protect branch; no force pushes</li>
+<li>Security:</li>
+<li>1Password Secrets Operator + Connect: in-cluster secret retrieval; Git stores references only</li>
+<li>Gatekeeper: enforce in prod, audit in staging; policies for prohibited patterns (e.g., base64 secrets inline, :latest tags, privileged pods) and workload hardening (require runAsNonRoot, drop ALL capabilities with minimal allowlist, readOnlyRootFilesystem, seccompProfile RuntimeDefault, disallow hostPath/hostNetwork/privileged; enforce Pod Security Admission Restricted)</li>
+<li>NetworkPolicies: default-deny in app namespaces with explicit allows (DNS, API server, Prometheus, 1Password Connect, GitLab Registry, Cloudflare Tunnel/Access, Tailscale, NTP, and ingress via Traefik only)</li>
+<li>RBAC: hardened least-privilege (namespace-scoped Flux Kustomizations, GitLab Runner constrained roles, operators limited to their namespaces with CRD-scope as needed)</li>
+<li>Observability:</li>
+<li>kube-prometheus-stack via HelmRelease (Prometheus Operator, Alertmanager, Grafana, node/kube exporters)</li>
+<li>Loki + Promtail for cluster logs; dashboards integrated in Grafana</li>
+<li>Alertmanager routes to Discord webhook; recommended alert baselines enabled</li>
+<li>Ingress/TLS:</li>
+<li>Cloudflare Tunnel terminates TLS at the edge; Cloudflare Access policies per app for SSO/MFA</li>
+<li>Traefik provides in-cluster routing and middlewares</li>
+<li>Optional internal TLS (cert-manager) for mTLS to Traefik or origin certs if needed</li>
+<li>Documentation:</li>
+<li>MkDocs Material site hosted via GitHub Pages (or equivalent); includes reproducibility guide and architecture docs</li>
+<li>Hybrid exposure: temporary, Access-protected demo links (72h) for specific reviewers; otherwise docs-only public</li>
+<li>Public mirror pipeline: On merges to main in GitLab, a CI job mirrors the infra repo to GitHub (read-only). Guardrails: Gitleaks block, .gitallowed with expirations, and path filters. Flux remains pointed at the private GitLab repo (approved).</li>
+<li>Lifecycle Automation &amp; Maintenance:</li>
+<li>Renovate-driven PRs (helm/docker/deps) with CI gates and auto-merge of patch updates to staging on green</li>
+<li>Flux Image Automation: staging auto patch; prod PR and manual reconcile; digest pinning</li>
+<li>Version drift exporter + update-latency SLO alerts (Grafana + Discord)</li>
+<li>Owner/Operator Maintenance Handbook with runbooks for updates, rotations, and maintenance windows</li>
+</ul>
+<h2 id="4-core-components">4) Core Components<a class="headerlink" href="#4-core-components" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Git server and CI:</li>
+<li>GitLab self-hosted on Mac Studio (Docker)</li>
+<li>GitLab Runner deployed in-cluster (Kubernetes executor) with minimal RBAC</li>
+<li>GitOps engine and UI:</li>
+<li>Flux (GitRepository + Kustomizations); Weave GitOps UI read-only for safety</li>
+<li>Secret management:</li>
+<li>1Password Secrets Operator + 1Password Connect</li>
+<li>Policy, security, and scanning:</li>
+<li>Gitleaks (pre-commit + CI)</li>
+<li>OPA Gatekeeper (admission policies)</li>
+<li>NetworkPolicy set and hardened RBAC</li>
+<li>Ingress and exposure:</li>
+<li>Traefik ingress in-cluster</li>
+<li>Cloudflare Tunnel + Cloudflare Access in front of Traefik</li>
+<li>Observability:</li>
+<li>kube-prometheus-stack (Prometheus, Alertmanager, Grafana)</li>
+<li>Loki + Promtail for logs</li>
+<li>Discord for alerts</li>
+<li>Public SCM mirror: GitHub (read-only) + GitHub Pages (docs)</li>
+<li>Storage:</li>
+<li>Longhorn as the default StorageClass (replica 2)</li>
+<li>Cluster:</li>
+<li>k3s: 1x server + 2x agents (3 nodes total)</li>
+</ul>
+<h2 id="5-appuser-flow">5) App/User Flow<a class="headerlink" href="#5-appuser-flow" title="Permanent link">&para;</a></h2>
+<p>Owner/Operator flow:
+1) Build or update app code in separate app repo; push to GitLab; CI builds/pushes image to GitLab Registry
+2) Flux Image Automation in infra repo:
+   - For staging overlays: automatically bumps to latest patch within selected semver minor line (e.g., 1.4.x), pins by digest
+   - For prod overlays: bump occurs via PR; after PR merges, prod is manually reconciled (Resume/Reconcile in Weave UI)
+3) Flux reconciles:
+   - overlays/staging Kustomization (auto-sync with prune + health checks)
+   - overlays/prod Kustomization is suspended by default; production apply requires manual action in Weave UI
+4) Post-deploy checks and visibility:
+   - Health checks via Flux + Prometheus; dashboards in Grafana; logs in Loki
+   - Alerts sent to Discord via Alertmanager
+5) Secrets resolved by 1Password Operator at runtime; no secrets stored in Git</p>
+<p>Portfolio Reviewer flow:
+- Default access is documentation-only (MkDocs)
+- Review code in the public GitHub mirror (read-only)
+- For demos: time-limited Cloudflare Access links to read-only Grafana dashboards or demo apps; Access controls enforce SSO/MFA and auto-expiry</p>
+<h2 id="6-tech-stack">6) Tech Stack<a class="headerlink" href="#6-tech-stack" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Platform: Proxmox, Ubuntu VMs, k3s, Longhorn</li>
+<li>Git/CI: GitLab (Docker), GitLab Runner (Kubernetes executor)</li>
+<li>GitOps: Flux, Weave GitOps UI</li>
+<li>Packaging: Kustomize overlays; HelmRelease for kube-prometheus-stack and Loki/Promtail</li>
+<li>Ingress/Exposure: Traefik in-cluster, Cloudflare Tunnel + Access</li>
+<li>Secrets: 1Password Secrets Operator + Connect</li>
+<li>Security/Compliance: OPA Gatekeeper, Pod Security Admission (Restricted), Gitleaks, NetworkPolicies, hardened RBAC, (recommended) Kubernetes audit logging, Renovate Bot (deps/Helm/containers)</li>
+<li>Runtime security (optional): Falco ruleset for syscall anomaly detection in cluster workloads</li>
+<li>Observability: Prometheus Operator, Grafana, Alertmanager, Loki + Promtail, Discord notifications</li>
+<li>Documentation: MkDocs Material, GitHub Pages (or equivalent)</li>
+<li>Public mirror: GitHub (read-only) + minimal GitHub Actions for docs build</li>
+<li>Security/Quality toolchain: Semgrep/CodeQL (SAST), OSV-Scanner/Trivy (SCA), Syft/Cosign (SBOM/signing), Checkov/tfsec/KICS (IaC), ShellCheck/shfmt, markdownlint, pre-commit</li>
+</ul>
+<h2 id="7-final-architectural-workflow">7) Final Architectural Workflow<a class="headerlink" href="#7-final-architectural-workflow" title="Permanent link">&para;</a></h2>
+<p>1) Developer pushes code to an app repo (GitLab); CI builds and pushes container image to GitLab Registry.
+2) Infra repo:
+   - Flux ImageRepository scans the registry; ImagePolicy selects latest patch version within minor line for staging; ImageUpdateAutomation commits the updated tag (pin by digest) to overlays/staging.
+   - Overlays/prod updates occur via PR after review.
+3) Flux source and reconciliation:
+   - Single Flux GitRepository (main branch) references the infra repo
+   - Two Flux Kustomizations: overlays/staging (auto-sync with interval e.g., 1m; prune and healthChecks enabled) and overlays/prod (spec.suspend: true)
+   - Release to prod is a deliberate action in Weave GitOps UI (Resume/Reconcile)
+4) Admission and policy:
+   - Gatekeeper audits in staging; enforces in prod. Policies include disallowing :latest, privileged pods, inline base64 secrets, and other controls
+5) Networking and security:
+   - Traffic flows: Cloudflare Edge (Access) → Tunnel → Traefik (in-cluster) → service
+   - NetworkPolicies default-deny in app namespaces; explicit egress to DNS, API server, 1Password Connect, GitLab Registry, Cloudflare, Tailscale, NTP; ingress only via Traefik
+   - RBAC least-privilege for Flux, GitLab Runner, operators
+6) Observability and logs:
+   - Prometheus/Grafana provide metrics and dashboards; Alertmanager routes to Discord
+   - Loki + Promtail ship logs; Kubernetes audit logs recommended to Loki with moderate policy and 7 days retention
+7) Public mirror:
+   - On main merges in GitLab, a CI job mirrors sanitized code to the public GitHub repo (read-only)
+   - Guardrails: rerun Gitleaks, enforce path whitelist/blacklist, and docs build check before push
+   - Flux sources from private GitLab (Option A, approved as standard). Alternative (not used): source from public GitHub with GPG-signed commit verification
+8) Supply chain security:
+   - App repos produce SBOMs (Syft) and sign images + SBOM/provenance (Cosign/Sigstore)
+   - Admission: enforce signature verification via Gatekeeper policy template (deny unsigned/untrusted images)
+   - CI gates: SAST (Semgrep/CodeQL), SCA (OSV-Scanner/Trivy), IaC scanning (Checkov/tfsec/KICS), container scan (Trivy), license scan</p>
+<p>9) Lifecycle &amp; Maintenance
+- Renovate proposes PRs for Helm charts, images, and app deps on a defined cadence
+- Staging auto-intakes patch updates via Flux Image Automation; soak period 24–72 hours
+- Prod promotion via PR and Weave UI manual reconcile after soak
+- Version drift exporter compares desired/deployed vs upstream; alert when drift &gt; policy
+- Scheduled rotation pipelines for API-capable providers; 1Password item staleness alerts</p>
+<h2 id="8-automated-testing-plan">8) Automated Testing Plan<a class="headerlink" href="#8-automated-testing-plan" title="Permanent link">&para;</a></h2>
+<p>Unit tests (shift-left):
+- App repos: language-specific unit tests and linting (e.g., Go/Python/Node as applicable)
+- Policy unit tests: OPA Rego policies validated via conftest or OPA test
+- YAML linting: yamllint/kube-linter on K8s manifests and Helm values
+- Property-based/fuzz testing (where applicable): Hypothesis/fast-check/Go fuzz tests for critical parsers and business logic
+- Shell scripts: shellcheck + shfmt
+- Docs: markdownlint for Markdown and link checking
+- Pre-commit: enforce hooks (gitleaks protect, lint suites) before committing</p>
+<p>Integration tests (CI):
+- Secret scanning: Gitleaks (block on known patterns/high severity); allowlist via .gitallowed (with ticket and expiry)
+- SAST: Semgrep or CodeQL (language-dependent rulesets incl. OWASP Top 10/CWE Top 25)
+- SCA/dependency: OSV-Scanner and/or Trivy filesystem scan; license compliance check
+- IaC scanning: Checkov/tfsec for Terraform; KICS for K8s manifests/Helm values
+- Manifest validation: kustomize build + kubeconform schemas
+- Policy pack: conftest or opa eval against admission policy suite for staging/prod expectations
+- Container image: Trivy image scan with critical findings block
+- Kubernetes dry-run: kubectl --server-dry-run apply -f on generated manifests using in-cluster GitLab Runner SA with limited RBAC
+- Supply chain: SBOM generation (Syft); image signing + attestations (Cosign); verify signatures in CI prior to admission
+- Mirror pre-flight: rerun Gitleaks on the mirror candidate, verify path filters, and dry-run docs build to catch broken links</p>
+<p>End-to-end tests:
+- Staging pipeline:
+  - Commit to main triggers Flux to auto-bump staging images (within semver range), reconcile overlays/staging
+  - Health verification: pod readiness, service endpoints reachability, Flux Kustomization status=Ready
+  - Synthetic check: smoke tests or k6 for key endpoints via Traefik (private or via Access)
+- Prod promotion:
+  - PR to bump overlays/prod to a specific semver tag; on approval and merge, Weave UI manual reconcile of prod
+  - Verify same health metrics and dashboards; compare staging vs prod deltas
+- Observability validation:
+  - Dashboards present and populated (Grafana)
+  - Alerts emulate: temporary rule to fire and verify Discord notification
+  - Loki queries return expected logs for selected apps and namespaces
+  - Docs publish validation: verify GitHub Pages build succeeds and mirror sync status is healthy
+  - DAST baseline (optional): OWASP ZAP baseline scan against staging endpoints via time-limited Access token (report-only by default)</p>
+<h2 id="9-cicd-workflow">9) CI/CD Workflow<a class="headerlink" href="#9-cicd-workflow" title="Permanent link">&para;</a></h2>
+<p>GitLab CI (infra repo):
+- pre-commit: gitleaks protect (developer machine)
+- pipeline stages:
+  1) lint: yamllint, kube-linter, Helm lint (for HelmReleases), shellcheck, markdownlint
+  2) sast_sca: Semgrep/CodeQL (SAST), OSV-Scanner/Trivy fs scan (SCA/license)
+  2.5) fuzz (optional): language-appropriate fuzzers (e.g., go-fuzz, Jazzer for JVM, Node.js fuzzing) on changed modules with crash artifacts collected
+  3) validate: gitleaks (block on high severity), kustomize build + kubeconform, conftest policy checks, IaC scanning (Checkov/tfsec/KICS)
+  4) dry-run: kubectl --server-dry-run using in-cluster GitLab Runner SA (limited RBAC)
+  5) build_sign: generate SBOM (Syft) and sign image + SBOM/provenance (Cosign)
+  6) image-automation:
+     - staging: Flux ImageUpdateAutomation commits semver patch bumps and pins by digest (auto-merge on green)
+     - prod: PR is required; same checks run, plus manual approval (CODEOWNERS) and conversations resolved requirement
+  7) mirror_to_github:
+     - Runs only on main after all checks pass
+     - Uses a GitHub PAT sourced via 1Password and injected into the in-cluster GitLab Runner
+     - Performs a path whitelist/blacklist check and reruns Gitleaks; builds docs in dry-run; pushes mirror to GitHub if clean
+- protected branches: overlays/prod/** requires PR + review; no force pushes; linear history recommended</p>
+<p>GitLab CI (app repos):
+- build and push image to GitLab Registry
+- SAST (Semgrep/CodeQL) and SCA (OSV-Scanner/Trivy) with block-on-critical
+- Generate SBOMs (Syft) and sign images + SBOM/provenance (Cosign); push attestations to registry
+- optional Trivy scan (additional policies); optional SBOM export artifact
+- trigger Flux Receiver webhook or rely on polling to pick up new image tags</p>
+<p>Docs site (GitHub):
+- Minimal GitHub Actions workflow to build/publish MkDocs from docs/ to GitHub Pages upon pushes to main</p>
+<h2 id="10-implementation-plan">10) Implementation Plan<a class="headerlink" href="#10-implementation-plan" title="Permanent link">&para;</a></h2>
+<p>Phase 0 — Foundations:
+- Stand up GitLab (Docker on Mac Studio) and create infra/app repos
+- Proxmox VMs: Ubuntu for k3s (1x server, 2x agents); install Longhorn; confirm StorageClass default
+- Create GitHub public repo and enable GitHub Pages
+- Add mirror_to_github GitLab CI job with 1Password-injected PAT; implement path filters and a second Gitleaks pass before mirroring</p>
+<p>Phase 1 — GitOps Core:
+- Bootstrap Flux (flux-system) and Weave GitOps UI (read-only)
+- Implement repo layout (Pattern C: <code>apps/&lt;app&gt;/base</code>; <code>overlays/staging</code>, <code>overlays/prod</code>; <code>clusters/lumacore/</code> with GitRepository + Kustomizations)
+- Configure staging Kustomization auto-sync (interval 1m; prune + health); prod Kustomization suspended
+- Configure Flux ImageRepository/ImagePolicy/ImageUpdateAutomation for semver patch auto-bumps in staging; pin by digest</p>
+<p>Phase 2 — Security Baseline:
+- Deploy 1Password Secrets Operator + Connect; refactor manifests to use secret references
+- Add OPA Gatekeeper; enforce in prod, audit in staging; author core policies (deny :latest, privileged pods, inline secrets, image registry allowlist)
+- Apply NetworkPolicy default-deny and explicit allows; verify egress and scrapes
+- Harden RBAC for Flux, GitLab Runner, operators
+- Enforce image signature verification at admission (Gatekeeper policy template validates Cosign signatures/attestations)
+- Recommended: enable Kubernetes audit logging with moderate policy; ship to Loki; retain 7 days</p>
+<p>Phase 3 — Observability:
+- Install kube-prometheus-stack via HelmRelease (Flux)
+- Install Loki + Promtail via HelmRelease (Flux)
+- Configure Alertmanager to Discord; import baseline dashboards and alert rules</p>
+<p>Phase 4 — Ingress and Exposure:
+- Deploy Traefik ingress controller
+- Configure Cloudflare Tunnel and Access (SSO/MFA) in front of Traefik; zero inbound ports
+- Document hybrid exposure and how to create temporary Access-protected demo links</p>
+<p>Phase 5 — CI/CD Hardening:
+- GitLab Runner in-cluster (Kubernetes executor) with minimal RBAC
+- Add CI stages (lint, sast_sca, validate, dry-run, build_sign, image automation) and branch protection rules
+- Implement SAST (Semgrep/CodeQL), SCA (OSV-Scanner/Trivy), IaC scanning (Checkov/tfsec/KICS), image scan (Trivy), SBOM/signing (Syft/Cosign)
+- Enforce block-on-critical for SAST/SCA/Trivy and signed image requirement
+- CODEOWNERS for overlays/prod PRs</p>
+<p>Phase 6 — Documentation and Reproducibility:
+- MkDocs Material: publish docs site (architecture, reproducibility guide, operations runbooks, demo playbooks)
+- Record topology, namespace conventions, SLOs, and alert/routing policies
+- Add screenshots and diagrams (network topology, GitOps flow)
+- Validate mirror pipeline on main merges and GitHub Pages build status; add status note/badge to README</p>
+<p>Phase 7 — DR and Playbooks (stretch for MVP if needed):
+- Node/service failure runbooks targeting MTTR &lt;10 minutes
+- Backup/restore procedures for Longhorn and critical components</p>
+<p>Phase 8 — Lifecycle &amp; Maintenance Automation (new):
+- Objectives:
+  - Keep apps and platform stacks current with minimal toil, using safe guardrails
+  - Provide clear Owner/Operator maintenance docs and cadences for any recurring manual items
+- Deliverables:
+  - Renovate enabled across infra + app repos (Helm charts, container images, language dependencies)
+  - Flux Image Automation confirmed (staging auto-bumps semver patch; prod by PR; digest pinning)
+  - Flux dependsOn and CRD-first ordering for operator stacks (Prometheus Operator, Gatekeeper, Loki, etc.)
+  - Version-drift exporter/alerts and update-latency SLOs (e.g., patch ≤7d to staging, ≤30d to prod)
+  - Staged rollout policy (patch/minor/major) with soak windows and rollback plan templates
+  - Owner/Operator Maintenance Handbook published under docs/ with runbooks
+- Acceptance Criteria:
+  - Weekly Renovate PRs visible; staging updates auto-merge on green; prod promoted via PR and manual reconcile
+  - Drift alerts fire when HelmRelease/chart/image is older than policy threshold
+  - Update-latency SLOs measured and reported (Grafana panel + alert)
+  - Runbooks exist and have been exercised via a dry-run</p>
+<p>Phase 9 — Offsite Backups &amp; DR Validation (new):
+- Objectives:
+  - Ensure offsite, encrypted backups for code, GitLab data, cluster PVs, and control-plane snapshots
+  - Keep operational complexity low with one cloud provider and simple tooling
+- Deliverables:
+  - Git repositories: push mirrors to private GitHub remotes per repo (read-only)
+  - GitLab application data: nightly encrypted backups to S3-compatible storage (restic or GitLab built-in); retention 7 daily / 4 weekly / 6 monthly
+  - Longhorn PVs: recurring backups to S3 target (daily + weekly); restore smoke-tests
+  - k3s: scheduled etcd snapshots on server; rclone CronJob sync to S3 if snapshots are local-only
+  - Credentials: all backup/mirror credentials stored in 1Password; no secrets in backups
+  - Single provider standardization (Cloudflare R2 / Backblaze B2 / AWS S3)
+  - Restore Playbook published and quarterly DR drill completed
+- Acceptance Criteria:
+  - Successful dry-run restore of GitLab backup artifacts to a test instance
+  - Successful Longhorn volume restore smoke-test into a scratch namespace
+  - Presence of recent k3s snapshots in S3; ability to validate/restore snapshot in test flow
+  - All backup jobs green for 30 days with retention respected; alerts on failure</p>
+<p>Acceptance targets (MVP):
+- Staging auto-sync functioning with semver patch auto-bumps
+- Production manual reconcile via Weave UI using PR-based promotion
+- CI gates blocking unsafe changes reliably (gitleaks, kubeconform, policies, dry-run)
+- Secrets fully managed via 1Password Operator (no secrets in Git)
+- Observability end-to-end working (dashboards, logs, alerts to Discord)
+- NetworkPolicy/RBAC baselines active without breaking core flows
+- MkDocs site published with reproducibility guide and architecture explained</p>
+<h2 id="11-governance-change-control">11) Governance &amp; Change Control<a class="headerlink" href="#11-governance-change-control" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Branching and protection</li>
+<li>Single main branch; overlays/staging (auto-sync), overlays/prod (manual)</li>
+<li>Protected branches: require signed commits/tags; PRs mandatory for overlays/prod/**</li>
+<li>CODEOWNERS for prod; no force-push; linear history recommended</li>
+<li>Promotion and release policy</li>
+<li>Patch updates: auto to staging on green; batch PR to prod after soak</li>
+<li>Minor updates: PR to staging; soak 24–72h; PR to prod with rollback plan</li>
+<li>Major updates: design review + explicit rollback and maintenance window</li>
+<li>Change windows</li>
+<li>Monthly: routine prod promotions</li>
+<li>Quarterly: platform upgrades (k3s, GitLab/Runner), Longhorn breaking changes as needed</li>
+<li>Auditability and traceability</li>
+<li>CI posts change summaries (drift, SBOM/signature verification results) to PRs</li>
+<li>Gatekeeper audit logs (staging) and enforcement logs (prod) retained; Loki and dashboards</li>
+<li>Documentation currency</li>
+<li>Renovate PRs to docs for version references (optional)</li>
+<li>“Owner/Operator Maintenance Handbook” kept in docs/; dead-link checks in CI</li>
+</ul>
+<h2 id="appendix-a-namespace-conventions">Appendix A — Namespace Conventions<a class="headerlink" href="#appendix-a-namespace-conventions" title="Permanent link">&para;</a></h2>
+<p>System namespaces:
+- flux-system, weave-gitops, monitoring, ingress-traefik, gatekeeper-system, onepassword, onepassword-connect, longhorn-system, gitlab-runner, logging (if separated)</p>
+<p>Per-app namespaces:
+- app-freshrss, app-librechat, <code>app-&lt;service&gt;</code></p>
+<p>Labeling:
+- Recommended labels for env, owner, purpose (e.g., lumacore.env=staging|prod)</p>
+<h2 id="appendix-b-networkpolicy-baseline">Appendix B — NetworkPolicy Baseline<a class="headerlink" href="#appendix-b-networkpolicy-baseline" title="Permanent link">&para;</a></h2>
+<p>Default-deny ingress and egress for app namespaces (not kube-system), with explicit allows:
+- DNS (TCP/UDP 53) to cluster DNS
+- kube-apiserver egress (443) for necessary interactions
+- Prometheus scrapes (monitoring namespace to targets)
+- Egress to 1Password Connect, GitLab Registry, Cloudflare Tunnel/Access endpoints, Tailscale, NTP
+- Ingress permitted only via Traefik (ingress-traefik namespace)</p>
+<h2 id="appendix-c-audit-logging-recommended-baseline">Appendix C — Audit Logging (Recommended Baseline)<a class="headerlink" href="#appendix-c-audit-logging-recommended-baseline" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Enable k3s API audit logging with a moderate policy</li>
+<li>Redact large/sensitive request bodies; include user, verb, resource, namespace, responseStatus</li>
+<li>Ship audit logs to Loki via Promtail; retain 7 days</li>
+<li>Alert on high-severity events to Discord</li>
+</ul>
+<h2 id="appendix-d-risks-assumptions-constraints">Appendix D — Risks, Assumptions, Constraints<a class="headerlink" href="#appendix-d-risks-assumptions-constraints" title="Permanent link">&para;</a></h2>
+<p>Risks:
+- Cloudflare Tunnel/Access misconfiguration could overexpose services; mitigated by docs-only default and time-bound Access policies
+- Admission policies might block valid changes; mitigated by audit in staging and policy test suite
+- Longhorn replica 2 in a 3-node cluster tolerates 1 node failure; further HA may be needed</p>
+<p>Assumptions:
+- Owner controls a domain and Cloudflare account (or will substitute)
+- Mac Studio available to host GitLab; adequate resources for CI and registry operations
+- 1Password Connect can be deployed in-cluster and has secure connectivity to 1Password</p>
+<p>Constraints:
+- Solo-operator throughput; choose automation over manual steps when possible
+- Keep public documentation free of secrets and private infrastructure details</p>
+<h2 id="appendix-e-dataloggingtelemetry-schema-high-level">Appendix E — Data/Logging/Telemetry Schema (High-Level)<a class="headerlink" href="#appendix-e-dataloggingtelemetry-schema-high-level" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Metrics: Prometheus (kube-state-metrics, node-exporter); Grafana dashboards per namespace/service</li>
+<li>Logs: Loki labels include namespace, pod, container, app, env=staging|prod</li>
+<li>Alerts: severity labels (info|warning|critical); route to Discord channel(s) with grouping by namespace/app</li>
+<li>Audit: Loki stream labeled audit=true; dashboards and queries for high-privilege actions</li>
+</ul>
+<h2 id="appendix-f-mirror-guardrails">Appendix F — Mirror Guardrails<a class="headerlink" href="#appendix-f-mirror-guardrails" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Allowed paths in mirror: clusters/, overlays/, apps/, docs/, .gitallowed, LICENSE, README</li>
+<li>Disallowed paths: state files (e.g., terraform <em>.tfstate</em>), caches, local inventories, credentials/secrets, internal-only scripts</li>
+<li>CI mirror job:</li>
+<li>Use GitHub PAT from 1Password; inject into in-cluster GitLab Runner</li>
+<li>Whitelist/blacklist check and rerun Gitleaks; dry-run docs build to catch issues</li>
+<li>Push to public GitHub repo only if all checks pass</li>
+</ul>
+<h2 id="appendix-g-security-controls-matrix-owasp-top-10-cwe-top-25">Appendix G — Security Controls Matrix (OWASP Top 10 / CWE Top 25)<a class="headerlink" href="#appendix-g-security-controls-matrix-owasp-top-10-cwe-top-25" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Injection/XSS/Deserialization (OWASP A03/A07): Semgrep/CodeQL rulesets in SAST; ZAP baseline (optional) in DAST</li>
+<li>Authentication/Access (OWASP A01/A07): Cloudflare Access SSO/MFA; Gatekeeper policies; RBAC least-privilege; audit logging</li>
+<li>Sensitive Data Exposure (OWASP A02): 1Password Operator (no secrets in Git); gitleaks; TLS via Cloudflare; internal mTLS optional</li>
+<li>Security Misconfiguration (OWASP A05): IaC scans (Checkov/tfsec/KICS), kube-linter, conftest/OPA policy tests</li>
+<li>Vulnerable/Outdated Components (OWASP A06/CWE Top 25): OSV-Scanner/Trivy SCA; container image scan; Renovate optional for deps</li>
+<li>Identification and AuthN failures (OWASP A07): RBAC reviews; Gatekeeper enforcing restricted capabilities</li>
+<li>Software/Data Integrity (OWASP A08): SBOM (Syft), image/signature verification (Cosign + Gatekeeper), mirror guardrails</li>
+<li>Logging/Monitoring (OWASP A09): Prometheus/Grafana dashboards; Loki logs; audit logs with Discord alerts</li>
+<li>SSRF/CSRF/Request Forgery: Semgrep/CodeQL rules; ZAP baseline (optional)</li>
+<li>General CWE Top 25 coverage: Semgrep/CodeQL standard profiles; policy/unit test suite for Rego; CI gates block criticals</li>
+</ul>
+<h2 id="appendix-h-hardening-recommendations-security-code-quality">Appendix H — Hardening Recommendations (Security + Code Quality)<a class="headerlink" href="#appendix-h-hardening-recommendations-security-code-quality" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Commit integrity:</li>
+<li>Require signed commits and tags on protected branches (GitLab push rules/rulesets)</li>
+<li>Enforce conventional commits and linear history for clearer auditability</li>
+<li>Dependency and image hygiene:</li>
+<li>Enable Renovate Bot for app/infra repos (languages, Helm charts, container tags)</li>
+<li>Enforce registry tag immutability and pin images by digest</li>
+<li>Pod/Container security:</li>
+<li>Enforce Pod Security Admission: Restricted baseline across namespaces</li>
+<li>Gatekeeper policies to require: runAsNonRoot, disallow privilege escalation, drop ALL caps with minimal allowlist, readOnlyRootFilesystem, seccompProfile RuntimeDefault, no hostPath/hostNetwork, resource limits/requests</li>
+<li>Supply chain:</li>
+<li>Generate SBOMs (Syft) and sign images + SBOM/provenance (Cosign); store attestations</li>
+<li>Admission verification: deny unsigned/untrusted images (policy template or Kyverno verifyImages as alternative)</li>
+<li>Publish to transparency log (Rekor) when feasible</li>
+<li>Runtime security (optional):</li>
+<li>Deploy Falco; tune rules for k3s/Longhorn/Flux/GitLab Runner namespaces; alert to Discord</li>
+<li>Fuzzing and property-based tests:</li>
+<li>Add fuzzer harnesses for parsers/serializers and critical business logic (go-fuzz, Jazzer, fast-check)</li>
+<li>Run fuzzers as optional CI jobs on PRs and nightly for extended time budgets</li>
+<li>DAST (optional but recommended):</li>
+<li>ZAP baseline against staging endpoints using short-lived Cloudflare Access token; report-only initially</li>
+<li>Cloudflare/WAF posture:</li>
+<li>Enable WAF, bot mitigation, rate limiting and security headers at Cloudflare Access per-app policies</li>
+<li>Secrets governance:</li>
+<li>Rotate 1Password Connect tokens periodically; monitor access with 1Password audit trails</li>
+<li>Enforce gitleaks on docs/mirror paths and block mirror on detections</li>
+<li>Backups and recovery:</li>
+<li>Encrypt backups at rest and in transit; test restore as part of DR runbooks</li>
+<li>Audit and compliance:</li>
+<li>Require 2FA/MFA on GitLab/GitHub accounts; restrict PAT scopes and TTL</li>
+<li>Retain audit logs for 7–30 days; alert on high-risk verbs (create/update ClusterRole/CRD, etc.)</li>
+</ul>
+<h2 id="appendix-i-owneroperator-maintenance-handbook-cadence-runbooks">Appendix I — Owner/Operator Maintenance Handbook (Cadence &amp; Runbooks)<a class="headerlink" href="#appendix-i-owneroperator-maintenance-handbook-cadence-runbooks" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Cadence &amp; SLOs</li>
+<li>Nightly: Renovate discovery; create PRs; staging image auto-bumps</li>
+<li>Weekly: Merge staging Helm/deps after green CI; soak 1–3 days</li>
+<li>Monthly: Promote to prod via PR; reconcile in Weave; verify health</li>
+<li>Quarterly: Platform windows (k3s, GitLab/Runner); backup+restore tests</li>
+<li>
+<p>SLOs: Patch update latency (staging ≤ 7d; prod ≤ 30d), Secret age warnings (60d) and critical (90d)</p>
+</li>
+<li>
+<p>Manual Task Matrix (What/When/How)</p>
+</li>
+<li>k3s minor/major upgrades (quarterly): pre-checks, backups, post-smoke checklist</li>
+<li>Longhorn upgrades (as needed): read release notes, backup+restore test</li>
+<li>GitLab self-hosted + Runner (monthly/quarterly): backup, update, validate runners</li>
+<li>Non-API credential/webhook rotation (as needed): create new, update 1Password item, verify Operator sync, trigger reloader</li>
+<li>1Password Connect/Operator token rotation (quarterly): scripted pipeline or step-by-step runbook</li>
+<li>GitHub PAT rotation for mirror (30–90 days): scripted via API or semi-automated with checklist</li>
+<li>
+<p>Backups and restore test (monthly/quarterly): verify restores of key data and state</p>
+</li>
+<li>
+<p>How-to Runbooks (to be published under docs/)</p>
+</li>
+<li>Promote updates from staging to prod</li>
+<li>Handle Renovate PRs (charts/images/deps)</li>
+<li>k3s upgrade window</li>
+<li>Rotate 1Password Connect token</li>
+<li>Rotate GitHub PAT for mirror</li>
+<li>Restore from Longhorn backup (smoke)</li>
+<li>
+<p>Respond to version drift alert</p>
+</li>
+<li>
+<p>Alerts &amp; Dashboards</p>
+</li>
+<li>Grafana panels for Update Latency and Version Drift; Discord alerts for drift &gt; policy, secret age &gt; threshold, and failed post-update health</li>
+</ul>
+<h2 id="appendix-j-offsite-backups-dr-matrix">Appendix J — Offsite Backups &amp; DR Matrix<a class="headerlink" href="#appendix-j-offsite-backups-dr-matrix" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Providers (choose one and standardize): Cloudflare R2 / Backblaze B2 / AWS S3</li>
+<li>Encryption: restic native encryption or server-side encryption for GitLab built-in archives</li>
+<li>Credentials: stored in 1Password; short-lived tokens preferred; no secrets committed</li>
+</ul>
+<p>Backup targets:
+- Git repositories:
+  - Method: GitLab push mirrors to private GitHub remotes (read-only); public sanitized mirror as already defined
+  - Frequency: on main merges (push-based)
+  - Test: clone mirror, verify commit parity with canonical
+- GitLab application data (config, repos, registry, DB):
+  - Method A: restic nightly backup of GitLab volumes to S3-compatible storage
+  - Method B: GitLab built-in backup rake → push to S3 via s3cmd/rclone
+  - Retention: 7 daily, 4 weekly, 6 monthly
+  - Test: quarterly restore into a disposable test instance
+- Longhorn persistent volumes:
+  - Method: Longhorn backupTarget to S3; recurring jobs (daily + weekly)
+  - Test: quarterly restore of representative volume to a scratch namespace
+- k3s control plane:
+  - Method: scheduled etcd snapshots on server; rclone CronJob sync snapshots to S3 if not remote
+  - Test: validate snapshot integrity; test restore in a throwaway environment</p>
+<p>Monitoring &amp; Alerting:
+- Export backup job status and recency metrics to Prometheus
+- Alerts to Discord on backup failures or recency violations
+- Dashboard panel “Backup Freshness” with per-target status</p>
+<p>Restore Playbook (linked from Maintenance Handbook):
+- GitLab restore steps (built-in or restic), including registry considerations
+- Longhorn volume restore flow and data verification checklist
+- k3s snapshot restore outline for test environments</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
