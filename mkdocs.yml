@@ -18,4 +18,5 @@ nav:
   - Overview: overview.md
   - Architecture (draft): architecture.md
   - PRD: PRD-LumaCore.md
+  - Roadmap: roadmap.md
   - Reproducibility (stub): reproducibility.md
